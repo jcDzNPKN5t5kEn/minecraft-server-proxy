@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MCPROXY ADMIN PANEL</title>
+  </head>
+  <body>
+<!--  banner  -->
+<form action="/api/update-upstream" method="POST">
+  <label for="update-upstream">修改上游服务器：</label>
+  <input type="text" id="update-upstream" value="update-upstream-replace" name="update-upstream" required>
+  <button type="submit">保存</button>
+</form>
+<form action="/api/update-overwrite-host" method="POST">
+  <label for="update-overwrite-hos">修改重写地址：</label>
+  <input type="text" id="update-overwrite-hos" value="update-overwrite-host-replace" name="update-overwrite-host" required>
+  <button type="submit">保存</button>
+</form>
+<form action="/api/update-overwrite-port" method="POST">
+  <label for="update-overwrite-port">修改重写端口：</label>
+  <input type="number" id="update-overwrite-port" value="update-overwrite-port-replace" name="update-overwrite-port" min="0" max="65535" required>
+  <button type="submit">保存</button>
+</form>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MCPROXY ADMIN PANEL</title>
+  </head>
+  <body>
+<!--  banner  -->
+<form action="/api/whitelist-update" method="POST" onsubmit="location.reload()">
+  <label for="whitelist">请输入白名单：</label><br>
+  <textarea id="whitelist" name="whitelist" rows="5" cols="50"><!--ALLOWED_NAME--></textarea><br>
+  <input type="submit" value="提交">
+</form>
+  </body>
+</html>

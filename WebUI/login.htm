@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MCPROXY ADMIN PANEL</title>
+  </head>
+  <body>
+
+<h1>MCPROXY WEBUI</h1>
+<h2>Authentication is required to access the admin panel</h2>
+
+<form action="/login" method="POST" onsubmit="location.reload()">
+  <label for="username">Username:</label>
+  <input type="text" id="username" name="username" required>
+
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" required>
+
+  <button type="submit" id="login">Log in</button>
+  <!--  Login failed  -->
+</form>
+
+
+  </body>
+</html>
