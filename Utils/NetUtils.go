@@ -27,21 +27,24 @@ func SyncConn(clientConn, serverConn net.Conn) {
 }
 
 func SyncConnWrite(clientConn, serverConn net.Conn) {
-	// 将服务器的响应转发给客户端
+
 	go func() {
 		defer clientConn.Close()
 		defer serverConn.Close()
-		sBuf, err := ReadConn(serverConn)
-		if err != nil {
-			return
+		for {
+			// 将服务器的响应转发给客户端
+			sBuf, err := ReadConn(serverConn)
+			if err != nil {
+				return
+			}
+			clientConn.Write(sBuf)
+			// 将客户端的请求转发给服务器
+			cBuf, err := ReadConn(serverConn)
+			if err != nil {
+				return
+			}
+			serverConn.Write(cBuf)
 		}
-		clientConn.Write(sBuf)
 	}()
-	// 将客户端的请求转发给服务器
-	cBuf, err := ReadConn(serverConn)
-	if err != nil {
-		return
-	}
-	serverConn.Write(cBuf)
 
 }

@@ -57,7 +57,6 @@ func main() {
 
 func handleClient(conn net.Conn) {
 
-
 	// 读包
 	buf, err := Utils.ReadConn(conn)
 	if err != nil {
@@ -68,7 +67,6 @@ func handleClient(conn net.Conn) {
 	// if Packet.IsPingPacket(buf){
 	// 	conn.Write()
 	// }
-
 
 	// 连接真实的 Minecraft 服务器
 	serverConn, err := net.Dial("tcp", Config.CurConfig.Remote)
@@ -83,7 +81,6 @@ func handleClient(conn net.Conn) {
 		buf = modifyPacket(buf, Config.CurConfig.OverwriteHost, Config.CurConfig.OverwritePort)
 		Utils.PrintlnAsHex(buf, "rebuild client hello: ")
 	}
-
 
 	// 发送修改后的登录包到服务器
 	_, err = serverConn.Write(buf)
