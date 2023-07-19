@@ -12,7 +12,7 @@ type LoginSuccessPacket struct {
 
 
 func IsLoginSuccessPacket(packet []byte) bool {
-	return packet[1] == 0x02
+	return len(packet) > 1 && packet[1] == 0x02
 }
 func ParseLoginSuccessPacket(packet []byte) LoginSuccessPacket {
 	returnPacket := LoginSuccessPacket{

@@ -19,6 +19,7 @@ var (
 	config        Config.Config
 	remote        = flag.String("remote", "209.222.115.24:25565", "server you want to proxy")
 	local         = flag.String("local", ":25565", "port to listen and forward to remote")
+	proxy         = flag.String("proxy", "no proxy", "http proxy")
 	webUIPort     = flag.String("webUI", ":8018", "port for WebUI")
 	overwriteHost = flag.String("overwriteHost", "mc.hypixel.net", "")
 	overwritePort = flag.Int("overwritePort", 25565, "")
@@ -30,6 +31,7 @@ func main() {
 	Config.CurConfig = Config.Config{
 		Remote:        *remote,
 		Local:         *local,
+		Proxy:         *proxy,
 		WebUIPort:     *webUIPort,
 		OverwriteHost: *overwriteHost,
 		OverwritePort: *overwritePort,
@@ -58,18 +60,25 @@ func main() {
 func handleClient(conn net.Conn) {
 
 	// 读包
-	buf, err := Utils.ReadConn(conn)
-	if err != nil {
-		fmt.Println(err)
+	buf := Utils.ReadConn(conn)
+	if buf == nil {
 		return
 	}
 
 	// if Packet.IsPingPacket(buf){
 	// 	conn.Write()
 	// }
-
+	targetIP := ""
+	if Config.CurConfig.Proxy == "no proxy" {
+		targetIP = Config.CurConfig.Remote
+	} else {
+		targetIP = Config.CurConfig.Proxy
+	}
 	// 连接真实的 Minecraft 服务器
-	serverConn, err := net.Dial("tcp", Config.CurConfig.Remote)
+	serverConn, err := net.Dial("tcp", targetIP)
+	if Config.CurConfig.Proxy != "no proxy" {
+		Utils.StartProxyHTTP(serverConn, Config.CurConfig.Remote)
+	}
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -88,9 +97,7 @@ func handleClient(conn net.Conn) {
 		fmt.Println(err)
 		return
 	}
-
 	Utils.SyncConn(conn, serverConn)
-
 }
 
 func modifyPacket(buf []byte, overwriteHost string, overwritePort int) []byte {
